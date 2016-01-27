@@ -1,0 +1,3 @@
+module.exports = {
+  firebase: "<URL TO YOUR FIREBASE APP",
+}
