@@ -55,6 +55,10 @@ let Menu = ({link}) => {
 
 let App = ({name, snap, time}) => {
   let today = time.toISOString().substring(0,10);
+  let msg = snap.child("disable").val();
+  if (msg) {
+    return h("h1", msg);
+  }
   return h("div", [
     h("h1", "Hello " + name + "! What will you eat today?"),
     Day({
