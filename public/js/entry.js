@@ -21,7 +21,7 @@ let state = Bacon.combineTemplate({
 
 var tree = h("div");
 var rootNode = createElement(tree);
-document.body.appendChild(rootNode);
+document.getElementById("app").appendChild(rootNode);
 
 
 state.onValue((currentState) => requestAnimationFrame(() => {
