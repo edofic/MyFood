@@ -57,7 +57,6 @@ let App = ({name, snap, time}) => {
   let today = time.toISOString().substring(0,10);
   return h("div", [
     h("h1", "Hello " + name + "! What will you eat today?"),
-    //<Day name={name} day={today} data={snap.child("days").child(today)} />
     Day({
       name: name,
       day: today,
