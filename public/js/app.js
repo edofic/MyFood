@@ -12,7 +12,7 @@ let Day = ({name, day, data, read_only}) => {
         let ref = data.child(person).ref();
         let value = event.target.value;
         if (value.trim().length) {
-          ref.set(value);
+          ref.set(value.substring(0,40));
         } else {
           ref.remove();
         }
