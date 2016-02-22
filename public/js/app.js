@@ -67,7 +67,7 @@ let App = ({name, snap, time}) => {
       data: snap.child("days").child(today)
     }),
     Menu({link: snap.child("latest_menu").val()}),
-    h("button", {className: "btn pull-right", onclick: () => ref.unauth()}, "Logout"),
+    h("button", {className: "btn pull-right", onclick: () => snap.ref().unauth()}, "Logout"),
   ])
 };
 
