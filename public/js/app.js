@@ -46,6 +46,7 @@ let Menu = ({link}) => {
     height: "60%",
     marginTop: "10px",
     marginBottom: "10px",
+    border: "1px solid #ccc"
   };
   return h('iframe', {
     style: style,
