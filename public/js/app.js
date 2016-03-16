@@ -6,8 +6,9 @@ let Day = ({name, day, data, read_only}) => {
   if (!entries[name]) {
     entries[name] = "";
   }
-  let rows = _.map(entries, (item, person) => {
-    if (name == person && !read_only && (new Date().getHours() < 11) ) {
+  let rows = _.map(_.keys(entries).sort(), (person) => {
+    let item = entries[person];
+    if (name == person && !read_only && (new Date().getHours() < 24)) {
       let onChange = (event) => {
         let ref = data.child(person).ref();
         let value = event.target.value;
