@@ -1,5 +1,6 @@
 let h = require('virtual-dom/h');
 let _ = require("lodash");
+const moment = require("moment/moment");
 
 let Day = ({name, day, data, read_only}) => {
   let entries = data.val() || {};
@@ -58,11 +59,14 @@ let Menu = ({link}) => {
 let App = ({name, snap, time}) => {
   let today = time.toISOString().substring(0,10);
   let msg = snap.child("disable").val();
+  const close = moment({hour: 11});
+
   if (msg) {
     return h("h1", msg);
   }
   return h("div", [
     h("h1", "Hello " + name + "! What will you eat today?"),
+    h("p", [(close.isAfter() ? "Orders close " : "Orders closed "), h("strong", close.fromNow()), "."]),
     Day({
       name: name,
       day: today,
