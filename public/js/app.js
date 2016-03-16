@@ -78,4 +78,3 @@ let App = ({name, snap, time}) => {
 };
 
 module.exports = App;
-

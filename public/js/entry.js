@@ -51,7 +51,3 @@ let onAuthCb = (authData) => {
   }
 };
 ref.onAuth(onAuthCb);
-
-
-
-
