@@ -9,6 +9,14 @@ let App = require("./app");
 let config = require("./config");
 
 function computeTimeState() {
+  if (!config.close) {
+    console.warn("Close setting not configured, form will never be disabled. Set close in config.js to address this.");
+    return {
+      isAfter: true,
+      fromNow: "when thy kingdom come",
+      today: moment()
+    };
+  }
   const close = moment(config.close);
   return {
     isAfter: close.isAfter(),
