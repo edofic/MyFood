@@ -20,8 +20,7 @@ let Day = ({name, day, data, read_only}) => {
       item = h("input", {
         type: "text",
         value: item,
-        onchange: onChange,
-        onkeyup: onChange,
+        oninput: onChange,
         style: {width: "100%"},
       });
     }
