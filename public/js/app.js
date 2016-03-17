@@ -2,14 +2,14 @@ let h = require('virtual-dom/h');
 let _ = require("lodash");
 const moment = require("moment/moment");
 
-let Day = ({name, day, data, read_only}) => {
+let Day = ({name, isAfter, data, read_only}) => {
   let entries = data.val() || {};
   if (!entries[name]) {
     entries[name] = "";
   }
   let rows = _.map(_.keys(entries).sort(), (person) => {
     let item = entries[person];
-    if (name == person && !read_only && (new Date().getHours() < 24)) {
+    if (name == person && !read_only && isAfter) {
       let onChange = (event) => {
         let ref = data.child(person).ref();
         let value = event.target.value;
@@ -57,19 +57,18 @@ let Menu = ({link}) => {
 };
 
 let App = ({name, snap, time}) => {
-  let today = time.toISOString().substring(0,10);
+  let today = time.today.toISOString().substring(0,10);
   let msg = snap.child("disable").val();
-  const close = moment({hour: 11});
 
   if (msg) {
     return h("h1", msg);
   }
   return h("div", [
     h("h1", "Hello " + name + "! What will you eat today?"),
-    h("p", [(close.isAfter() ? "Orders close " : "Orders closed "), h("strong", close.fromNow()), "."]),
+    h("p", [(time.isAfter ? "Orders close " : "Orders closed "), h("strong", time.fromNow), "."]),
     Day({
       name: name,
-      day: today,
+      isAfter: time.isAfter,
       data: snap.child("days").child(today)
     }),
     Menu({link: snap.child("latest_menu").val()}),

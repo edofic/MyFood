@@ -1,3 +1,6 @@
 module.exports = {
-  firebase: "<URL TO YOUR FIREBASE APP",
+  firebase: "<URL TO YOUR FIREBASE APP>",
+  close: {
+    hour: 11
+  }
 }

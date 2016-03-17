@@ -3,13 +3,22 @@ let createElement = require('virtual-dom/create-element');
 let diff = require('virtual-dom/diff');
 let h = require('virtual-dom/h');
 let patch = require('virtual-dom/patch');
+const moment = require("moment/moment");
 
 let App = require("./app");
 let config = require("./config");
 
+function computeTimeState() {
+  const close = moment(config.close);
+  return {
+    isAfter: close.isAfter(),
+    fromNow: close.fromNow(),
+    today: moment()
+  }
+}
 
 let fire_state = new Bacon.Bus();
-let time_state = Bacon.fromPoll(1000, () => new Date());
+let time_state = Bacon.fromPoll(1000, computeTimeState);
 let name_state = new Bacon.Bus();
 
 let state = Bacon.combineTemplate({
