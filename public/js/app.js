@@ -9,6 +9,7 @@ let Day = ({name, isAfter, data, read_only}) => {
   }
   let rows = _.map(_.keys(entries).sort(), (person) => {
     let item = entries[person];
+    let meToo = "";
     if (name == person && !read_only && isAfter) {
       let onChange = (event) => {
         let ref = data.child(person).ref();
@@ -26,16 +27,28 @@ let Day = ({name, isAfter, data, read_only}) => {
         onkeyup: onChange,
         style: {width: "100%"},
       });
+    } else if (!read_only && isAfter) {
+      meToo = h("a", {
+        href: "javascript://",
+        title: "Sounds good, I'll have what he's having.",
+        onclick: () => {
+          let ref = data.child(name).ref();
+          ref.set(entries[person]);
+        }
+      }, [h("i", {
+        className: "fa fa-hand-o-left"
+      })]);
     }
     return h("tr", {key: person}, [
         h("td", person),
         h("td", item),
+        h("td", meToo)
     ]);
   });
   return h("div", [
       h("table", {className: "table"}, [
         h("thead", [
-          h("tr", [h("th", "Person"), h("th", "Food")])
+          h("tr", [h("th", "Person"), h("th", "Food"), h("th", "")])
         ]),
         h("tbody", rows),
       ])
