@@ -1,13 +1,16 @@
 let h = require('virtual-dom/h');
 let _ = require("lodash");
+const moment = require("moment/moment");
 
-let Day = ({name, day, data, read_only}) => {
+let Day = ({name, isAfter, data, read_only}) => {
   let entries = data.val() || {};
   if (!entries[name]) {
     entries[name] = "";
   }
-  let rows = _.map(entries, (item, person) => {
-    if (name == person && !read_only && (new Date().getHours() < 11) ) {
+  let rows = _.map(_.keys(entries).sort(), (person) => {
+    let item = entries[person];
+    let meToo = "";
+    if (name == person && !read_only && isAfter) {
       let onChange = (event) => {
         let ref = data.child(person).ref();
         let value = event.target.value;
@@ -23,16 +26,28 @@ let Day = ({name, day, data, read_only}) => {
         oninput: onChange,
         style: {width: "100%"},
       });
+    } else if (!read_only && isAfter) {
+      meToo = h("a", {
+        href: "javascript://",
+        title: "Sounds good, I'll have what he's having.",
+        onclick: () => {
+          let ref = data.child(name).ref();
+          ref.set(entries[person]);
+        }
+      }, [h("i", {
+        className: "fa fa-hand-o-left"
+      })]);
     }
     return h("tr", {key: person}, [
         h("td", person),
         h("td", item),
+        h("td", meToo)
     ]);
   });
   return h("div", [
       h("table", {className: "table"}, [
         h("thead", [
-          h("tr", [h("th", "Person"), h("th", "Food")])
+          h("tr", [h("th", "Person"), h("th", "Food"), h("th", "")])
         ]),
         h("tbody", rows),
       ])
@@ -45,6 +60,7 @@ let Menu = ({link}) => {
     height: "60%",
     marginTop: "10px",
     marginBottom: "10px",
+    border: "1px solid #ccc"
   };
   return h('iframe', {
     style: style,
@@ -53,16 +69,18 @@ let Menu = ({link}) => {
 };
 
 let App = ({name, snap, time}) => {
-  let today = time.toISOString().substring(0,10);
+  let today = time.today.toISOString().substring(0,10);
   let msg = snap.child("disable").val();
+
   if (msg) {
     return h("h1", msg);
   }
   return h("div", [
     h("h1", "Hello " + name + "! What will you eat today?"),
+    h("p", [(time.isAfter ? "Orders close " : "Orders closed "), h("strong", time.fromNow), "."]),
     Day({
       name: name,
-      day: today,
+      isAfter: time.isAfter,
       data: snap.child("days").child(today)
     }),
     Menu({link: snap.child("latest_menu").val()}),
@@ -71,4 +89,3 @@ let App = ({name, snap, time}) => {
 };
 
 module.exports = App;
-

@@ -1,3 +1,7 @@
 module.exports = {
-  firebase: "<URL TO YOUR FIREBASE APP",
+  firebase: "<URL TO YOUR FIREBASE APP>",
+  // Close form inputs at the specified time:
+  close: { // Uses moment.js constructor object - http://momentjs.com/docs/#/parsing/object/
+    hour: 11
+  }
 }
