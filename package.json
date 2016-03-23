@@ -1,6 +1,9 @@
 {
   "name": "recifood",
   "version": "1.0.0",
+  "scripts": {
+    "dev": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base public"
+  },
   "dependencies": {
     "baconjs": "^0.7.83",
     "moment": "^2.12.0",
