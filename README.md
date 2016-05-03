@@ -20,5 +20,5 @@ App for ordering food.
 1. cd into project directory
 2. copy config.js.sample into config.js and set the firebase url
 3. run `npm install`
-4. run `webpack-dev-server`
+4. run `npm run dev`
 5. Open the webrowser on http://localhost:8080
