@@ -13,7 +13,7 @@ def payloads_from_file(fp):
 
 
 def main():
-  from myfood.config import AUTH_SENDER, POST_URL
+  from myfood.config import AUTH_SENDER, POST_URL, URL_PREFIX, PUT_NAME_URL
 
   sender = os.environ.get("SENDER", None)
   if sender != AUTH_SENDER:
@@ -27,3 +27,11 @@ def main():
   print "Uploading", payloads.keys()
   res = requests.post(POST_URL, files=payloads)
   print res.status_code, res.text
+
+  print "Setting latest"
+  if len(payloads) == 0:
+    print "WARNING: no payloads"
+  else:
+    res = requests.put(PUT_NAME_URL,
+                       data='"{}{}"'.format(URL_PREFIX, payloads.keys()[0]))
+    print res.status_code, res.text
