@@ -1,0 +1,4 @@
+*.pyc
+/result
+/myfood.egg-info
+/myfood/config.py

@@ -1,0 +1,2 @@
+AUTH_SENDER = <your email here>
+POST_URL = <http post url here>
