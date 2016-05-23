@@ -3,6 +3,10 @@ import os
 import sys
 import requests
 
+from syslog import syslog
+
+from myfood.config import AUTH_SENDER, POST_URL, URL_PREFIX, PUT_NAME_URL
+
 
 def payloads_from_file(fp):
   msg = email.message_from_file(fp)
@@ -13,25 +17,23 @@ def payloads_from_file(fp):
 
 
 def main():
-  from myfood.config import AUTH_SENDER, POST_URL, URL_PREFIX, PUT_NAME_URL
-
   sender = os.environ.get("SENDER", None)
   if sender != AUTH_SENDER:
-    print "ignoring message form", sender
+    syslog("ignoring message from {}".format(sender))
     return
 
   payloads = payloads_from_file(sys.stdin)
   if len(payloads) > 1:
-    print "WARNING: multiple pdf payloads"
+    syslog("WARNING: multiple pdf payloads")
 
-  print "Uploading", payloads.keys()
+  syslog("Uploading {}".format(payloads.keys()))
   res = requests.post(POST_URL, files=payloads)
-  print res.status_code, res.text
+  syslog("Response {} {}".format(res.status_code, res.text))
 
-  print "Setting latest"
+  syslog("Setting latest")
   if len(payloads) == 0:
-    print "WARNING: no payloads"
+    syslog("WARNING: no payloads")
   else:
     res = requests.put(PUT_NAME_URL,
                        data='"{}{}"'.format(URL_PREFIX, payloads.keys()[0]))
-    print res.status_code, res.text
+    syslog("Response {} {}".format(res.status_code, res.text))
