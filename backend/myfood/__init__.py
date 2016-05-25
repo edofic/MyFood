@@ -17,8 +17,13 @@ def payloads_from_file(fp):
           "pdf" in m.get_content_type()}
 
 
+def strip_tags(address):
+  user, domain = address.split("@")
+  return "{}@{}".format(user.split("+")[0], domain)
+
+
 def main():
-  sender = os.environ.get("SENDER", None)
+  sender = strip_tags(os.environ.get("SENDER", None))
   if sender != AUTH_SENDER:
     syslog("ignoring message from {}".format(sender))
     return
