@@ -1,7 +1,8 @@
+import datetime
 import email
 import os
-import sys
 import requests
+import sys
 
 from syslog import syslog
 
@@ -13,7 +14,7 @@ def payloads_from_file(fp):
   return {m.get_filename(): m.get_payload(decode=True)
           for m in msg.walk()
           if m.get_filename() and
-          "pdf" in m.get_filename()}
+          "pdf" in m.get_content_type()}
 
 
 def main():
@@ -26,6 +27,11 @@ def main():
   if len(payloads) > 1:
     syslog("WARNING: multiple pdf payloads")
 
+  payloads = {
+      (fn if fn.lower().endswith("pdf")
+       else datetime.datetime.now().isoformat() + ".pdf"): content
+      for fn, content in payloads.iteritems()
+  }
   syslog("Uploading {}".format(payloads.keys()))
   res = requests.post(POST_URL, files=payloads)
   syslog("Response {} {}".format(res.status_code, res.text))
