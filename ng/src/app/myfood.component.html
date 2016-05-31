@@ -1,0 +1,55 @@
+<div class="container" style="height: 100vh;">
+
+  <h1>
+    Hello {{my_name}}! What will you eat today?
+  </h1>
+  <p>
+    Orders
+    <span [ngSwitch]="(timeState | async)?.open">
+      <span *ngSwitchWhen="true">close</span>
+      <span *ngSwitchDefault>closed</span>
+    </span>
+    <strong>{{ (timeState | async)?.text}}</strong>.
+  </p>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Person</th>
+        <th>Food</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="(timeState | async)?.open">
+        <td>{{my_name}}</td>
+        <td>
+          <input
+           type="TEXT"
+           #box
+           [value]="my_order | async"
+           (input)="save(box.value)"/>
+        </td>
+      </tr>
+      <tr *ngFor="let order of orders | async">
+        <td>{{order.key}}</td>
+        <td>{{order.value}}</td>
+        <td>
+          <a *ngIf="(timeState | async)?.open"
+           href="javascript://"
+           title="Sounds good, I'll have that too!"
+           (click)="save(order.value)">
+            <i class="fa fa-hand-o-left"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <iframe
+   src="{{menu_link | async}}"
+   style="width: 100%; height: 60%; margin-top: 10px; margin-bottom: 10px; border: 1px solid #ccc;"></iframe>
+  <button class="btn pull-right" (click)="logout()">Logout</button>
+
+</div>
+
