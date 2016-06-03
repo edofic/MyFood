@@ -1,4 +1,8 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {}
+
+, FIREBASE
+, CLOSE_TIME
+}:
 
 let
   nodePackages = import "${pkgs.path}/pkgs/top-level/node-packages.nix" {
@@ -34,6 +38,13 @@ in rec {
     peerDependencies = [];
     postInstall = ''
       cd $out/lib/node_modules/myfood
+      cat > js/config.js <<EOF
+        module.exports = {
+          firebase: "${FIREBASE}",
+          // Close form inputs at the specified time:
+          close: ${CLOSE_TIME}
+        }
+      EOF
       webpack
     '';
   };
