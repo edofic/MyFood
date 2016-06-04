@@ -1,0 +1,16 @@
+module.exports = {
+  AUTH: {
+    user: '<your email here>',
+    pass: '<password>'
+  },
+  TEMPLATE: {
+    SUBJECT: "MyFood order ",
+    HEADER: "Hi,\n\nthis is today's order:\n",
+    FOOTER: "\n\nThanks",
+  },
+  FIREBASE: "https://yourapp.firebaseio.com",
+  EMAILS: {
+    ORDER: "order@example.com",
+    ARCHIVE: "archive@example.com"
+  }
+}
