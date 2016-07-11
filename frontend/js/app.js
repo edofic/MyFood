@@ -78,6 +78,7 @@ let App = ({name, snap, time}) => {
   return h("div", [
     h("h1", "Hello " + name + "! What will you eat today?"),
     h("p", [(time.isAfter ? "Orders close " : "Orders closed "), h("strong", time.fromNow), "."]),
+    h("h3", snap.child("note").val()),
     Day({
       name: name,
       isAfter: time.isAfter,
