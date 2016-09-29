@@ -3,14 +3,13 @@
 
 const Q = require('q');
 const https = require('https');
-const nodemailer = require('nodemailer');
+const AWS = require('aws-sdk');
 
 const config = require("./config.js");
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: config.AUTH
-});
+AWS.config.update(config.AWS);
+
+const SES = new AWS.SES();
 
 function format(data) {
   let text = '';
@@ -59,8 +58,24 @@ function fetch_data(date) {
 function send_mail(to, subj, text) {
   console.log("sending email", to, subj);
   const p = Q.defer();
-  const bcc = config.AUTH.SENDER;
-  transporter.sendMail({to: to, bcc: bcc, subject: subj, text: text}, function (err) {
+  const params = {
+    Destination: {
+      ToAddresses: [to],
+      BccAddresses: [config.AWS.sourceEmail]
+    },
+    Source: config.AWS.sourceEmail,
+    Message: {
+      Subject: {
+        Data: subj
+      },
+      Body: {
+        Text: {
+          Data: text
+        }
+      }
+    }
+  };
+  SES.sendEmail(params, function (err, data) {
     if (err) {
       p.reject(err);
       console.log("email err", to, subj, err);

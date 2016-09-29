@@ -1,8 +1,4 @@
 module.exports = {
-  AUTH: {
-    user: '<your email here>',
-    pass: '<password>'
-  },
   TEMPLATE: {
     SUBJECT: "MyFood order ",
     HEADER: "Hi,\n\nthis is today's order:\n",
@@ -12,5 +8,12 @@ module.exports = {
   EMAILS: {
     ORDER: "order@example.com",
     ARCHIVE: "archive@example.com"
+
+  },
+  AWS: {
+    "sourceEmail": "MYSESADDRESS",
+    "accessKeyId": "YOURAMAZONKEY",
+    "secretAccessKey": "YOURAMAZONSECRET",
+    "region": "us-east-1"
   }
 }
